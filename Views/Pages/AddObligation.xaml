@@ -1,0 +1,345 @@
+﻿<Page x:Class="WpfApp1.Views.Pages.AddObligation"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:local="clr-namespace:WpfApp1.Views.Pages"
+      mc:Ignorable="d"
+      d:DesignHeight="450" d:DesignWidth="800"
+      SizeChanged="Page_SizeChanged"
+      Title="Add Obligation">
+
+    <Grid Background="{Binding Source={StaticResource AppSettings}, Path=BackgroundBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="3.5*" />
+            <RowDefinition Height="0.75*" />
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        
+                <!-- Header -->
+        <Label Content="إضافة إلتزام جديد"
+               Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
+               VerticalAlignment="Center" HorizontalAlignment="Center"
+               FontFamily="Arabic Typesetting"
+               FontSize="50" FontWeight="ExtraBold"
+               Foreground="{Binding Source={StaticResource AppSettings}, Path=TitleColor}" />
+
+        <Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="{Binding ScrollViewMargin}" BorderThickness="3" BorderBrush="WhiteSmoke" CornerRadius="5">
+            <ScrollViewer>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <!-- Row 1 -->
+                    <Border Grid.Column="1" Grid.Row="0"
+                                CornerRadius="5" BorderBrush="Orange" BorderThickness="2"
+                                Background="{Binding Source={StaticResource AppSettings}, Path=LabelColor}" VerticalAlignment="Stretch" HorizontalAlignment="Right"
+                                Width="{Binding LabelWidth}" Height ="{Binding LabelHeight}" Margin="{Binding ItemMargin}">
+                        <Viewbox Stretch="Uniform" HorizontalAlignment="Right">
+                            <Label Content=":رقم الفاكس"
+                                       Foreground="Black"
+                                       HorizontalAlignment="Right" VerticalAlignment="Stretch"
+                                       FontFamily="Arabic Typesetting" FontWeight="ExtraBold" />
+                        </Viewbox>
+                    </Border>
+                    <Border Grid.Column="0" Grid.Row="0"
+                                    CornerRadius="5" BorderBrush="Orange" BorderThickness="2"
+                                    Background="{Binding Source={StaticResource AppSettings}, Path=LabelColor}" VerticalAlignment="Stretch" HorizontalAlignment="Right"
+                                    Width="{Binding LabelWidth}" Height ="{Binding LabelHeight}" Margin="{Binding ItemMargin}">
+                        <Viewbox Stretch="Uniform" HorizontalAlignment="Right">
+                            <Label Content=":تاريخ الفاكس"
+                                        Foreground="Black"
+                                        HorizontalAlignment="Right" VerticalAlignment="Stretch"
+                                        FontFamily="Arabic Typesetting" FontWeight="ExtraBold" />
+                        </Viewbox>
+                    </Border>
+                    <!-- Row 2 -->
+                    <Border Grid.Column="1" Grid.Row="1"
+                            CornerRadius="5" BorderBrush="Black" BorderThickness="2"
+                            Background="White" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+                            Margin="{Binding ItemMargin}">
+                        <TextBox x:Name ="faxNo"  Text="" Background="Transparent"
+                                Margin="{Binding ItemMargin}"
+                                TextDecorations="None"
+                                FontWeight="Bold" FontSize="18"
+                                VerticalContentAlignment="Center" HorizontalContentAlignment="Right"
+                                BorderThickness="0" IsReadOnly="False"
+                                HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                TextAlignment="Left"
+                                FlowDirection="RightToLeft"
+                            />
+                    </Border>
+                    <Border Grid.Column="0" Grid.Row="1"
+                                CornerRadius="5" BorderBrush="Black" BorderThickness="2"
+                                Background="White" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+                                Margin="{Binding ItemMargin}">
+                        <DatePicker  x:Name="FaxDate" Background="Transparent" 
+                                        Margin="{Binding ItemMargin}"
+                                        FontWeight="Bold" FontSize="18"
+                                        VerticalContentAlignment="Center" HorizontalContentAlignment="Right"
+                                        BorderThickness="0"
+                                        HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                        SelectedDate="{Binding FaxDate, StringFormat='yyyy/MM/dd'}"
+                                        SelectedDateFormat="long"
+                                        Language="ar-SA"
+                            >
+                            <DatePicker.Resources>
+                                <Style TargetType="DatePickerTextBox">
+                                    <Setter Property="HorizontalContentAlignment" Value="Right" />
+                                    <Setter Property="VerticalContentAlignment" Value="Center" />
+                                    <Setter Property="FontFamily" Value="Arabic Typesetting"/>
+                                    <Setter Property="FontSize" Value="20"/>
+                                </Style>
+                            </DatePicker.Resources>
+                        </DatePicker>
+                    </Border>
+                    <!-- Row 3 -->
+                    <Border Grid.Column="1" Grid.Row="2"
+                        CornerRadius="5" BorderBrush="Orange" BorderThickness="2"
+                        Background="{Binding Source={StaticResource AppSettings}, Path=LabelColor}" VerticalAlignment="Stretch" HorizontalAlignment="Right"
+                        Width="{Binding LabelWidth}" Height ="{Binding LabelHeight}" Margin="{Binding ItemMargin}">
+                        <Viewbox Stretch="Uniform" HorizontalAlignment="Right">
+                            <Label Content=":عنوان الإلتزام"
+                                  Foreground="Black"
+                                  HorizontalAlignment="Right" VerticalAlignment="Stretch"
+                                  FontFamily="Arabic Typesetting" FontWeight="ExtraBold" />
+                        </Viewbox>
+                    </Border>
+
+                    <Border Grid.Column="0" Grid.Row="2"
+                        CornerRadius="5" BorderBrush="Orange" BorderThickness="2"
+                        Background="{Binding Source={StaticResource AppSettings}, Path=LabelColor}" VerticalAlignment="Stretch" HorizontalAlignment="Right"
+                        Width="{Binding LabelWidth}" Height ="{Binding LabelHeight}" Margin="{Binding ItemMargin}">
+                        <Viewbox Stretch="Uniform" HorizontalAlignment="Right">
+                            <Label Content=":تاريخ بداية الإلتزام"
+                                   Foreground="Black"
+                                   HorizontalAlignment="Right" VerticalAlignment="Stretch"
+                                   FontFamily="Arabic Typesetting" FontWeight="ExtraBold" />
+                        </Viewbox>
+                    </Border>
+                    <!-- Row 4 -->
+                    <Border Grid.Column="1" Grid.Row="3"
+                            CornerRadius="5" BorderBrush="Black" BorderThickness="2"
+                            Background="White" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+                            Margin="{Binding ItemMargin}">
+                            <TextBox x:Name ="ObligationContent" Text="" Background="Transparent"
+                                Margin="{Binding ItemMargin}"
+                                TextDecorations="None"
+                                FontWeight="Bold" FontSize="18"
+                                VerticalContentAlignment="Center" HorizontalContentAlignment="Right"
+                                BorderThickness="0" IsReadOnly="False"
+                                HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                TextAlignment="Left"
+                                FlowDirection="RightToLeft"
+                            />
+                    </Border>
+
+                    <Border Grid.Column="0" Grid.Row="3"
+                            CornerRadius="5" BorderBrush="Black" BorderThickness="2"
+                            Background="White" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+                            Margin="{Binding ItemMargin}">
+                            <DatePicker  x:Name="StartDate" Background="Transparent" 
+                                Margin="{Binding ItemMargin}"
+                                FontWeight="Bold" FontSize="18"
+                                VerticalContentAlignment="Center" HorizontalContentAlignment="Right"
+                                BorderThickness="0"
+                                HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                SelectedDate="{Binding ObligationStartDate, StringFormat='yyyy/MM/dd'}"
+                                SelectedDateFormat="long"
+                                Language="ar-SA"
+                            >
+                            <DatePicker.Resources>
+                                <Style TargetType="DatePickerTextBox">
+                                    <Setter Property="HorizontalContentAlignment" Value="Right" />
+                                    <Setter Property="VerticalContentAlignment" Value="Center" />
+                                    <Setter Property="FontFamily" Value="Arabic Typesetting"/>
+                                    <Setter Property="FontSize" Value="20"/>
+                                </Style>
+                            </DatePicker.Resources>
+                        </DatePicker>
+                    </Border>
+                    <!-- Row 5 -->
+                    <Border Grid.Column="1" Grid.Row="4"
+                        CornerRadius="5" BorderBrush="Orange" BorderThickness="2"
+                        Background="{Binding Source={StaticResource AppSettings}, Path=LabelColor}" VerticalAlignment="Stretch" HorizontalAlignment="Right"
+                        Width="{Binding LabelWidth}" Height ="{Binding LabelHeight}" Margin="{Binding ItemMargin}">
+                        <Viewbox Stretch="Uniform" HorizontalAlignment="Right">
+                            <Label Content=":تاريخ نهاية الإلتزام"
+                                Foreground="Black"
+                                HorizontalAlignment="Right" VerticalAlignment="Stretch"
+                                FontFamily="Arabic Typesetting" FontWeight="ExtraBold" />
+                        </Viewbox>
+                    </Border>
+
+                    <Border Grid.Column="0" Grid.Row="4"
+                            CornerRadius="5" BorderBrush="Orange" BorderThickness="2"
+                            Background="{Binding Source={StaticResource AppSettings}, Path=LabelColor}" VerticalAlignment="Stretch" HorizontalAlignment="Right"
+                            Width="{Binding LabelWidth}" Height ="{Binding LabelHeight}" Margin="{Binding ItemMargin}">
+                        <Viewbox Stretch="Uniform" HorizontalAlignment="Right">
+                            <Label Content=":الحاضرون"
+                                   Foreground="Black"
+                                   HorizontalAlignment="Right" VerticalAlignment="Stretch"
+                                   FontFamily="Arabic Typesetting" FontWeight="ExtraBold" />
+                        </Viewbox>
+                    </Border>
+                    <!-- Row 6 -->
+                    <Border Grid.Column="0"  Grid.Row="5"
+                            CornerRadius="5" BorderBrush="Black" BorderThickness="2"
+                            Background="White" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+                            Margin="{Binding ItemMargin}">
+                            <TextBox x:Name ="Attendants" Text="" Background="Transparent"
+                                    Margin="{Binding ItemMargin}"
+                                    TextDecorations="None"
+                                    FontWeight="Bold" FontSize="18"
+                                    VerticalContentAlignment="Center" HorizontalContentAlignment="Right"
+                                    BorderThickness="0" IsReadOnly="False"
+                                    HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                    TextAlignment="Left"
+                                    FlowDirection="RightToLeft"
+                            />
+                    </Border>
+
+                    <Border Grid.Column="1" Grid.Row="5"
+                            CornerRadius="5" BorderBrush="Black" BorderThickness="2"
+                            Background="White" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+                            Margin="{Binding ItemMargin}">
+                        <DatePicker  x:Name="EndDate" Background="Transparent" 
+                                    Margin="{Binding ItemMargin}"
+                                    FontWeight="Bold" FontSize="18"
+                                    VerticalContentAlignment="Center" HorizontalContentAlignment="Right"
+                                    BorderThickness="0"
+                                    HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                    SelectedDate="{Binding ObligationEndDate, StringFormat='yyyy/MM/dd'}"
+                                    SelectedDateFormat="long"
+                                    Language="ar-SA"
+                        >
+                            <DatePicker.Resources>
+                                <Style TargetType="DatePickerTextBox">
+                                    <Setter Property="HorizontalContentAlignment" Value="Right" />
+                                    <Setter Property="VerticalContentAlignment" Value="Center" />
+                                    <Setter Property="FontFamily" Value="Arabic Typesetting"/>
+                                    <Setter Property="FontSize" Value="20"/>
+                                </Style>
+                            </DatePicker.Resources>
+                        </DatePicker>
+                    </Border>
+                    <!-- Row 7 -->
+                    <Border Grid.Column="1" Grid.Row="6"
+                        CornerRadius="5" BorderBrush="Orange" BorderThickness="2"
+                        Background="{Binding Source={StaticResource AppSettings}, Path=LabelColor}" VerticalAlignment="Stretch" HorizontalAlignment="Right"
+                        Width="{Binding LabelWidth}" Height ="{Binding LabelHeight}" Margin="{Binding ItemMargin}">
+                        <Viewbox Stretch="Uniform" HorizontalAlignment="Right">
+                            <Label Content=":الوحدة"
+                                Foreground="Black"
+                                HorizontalAlignment="Right" VerticalAlignment="Stretch"
+                                FontFamily="Arabic Typesetting" FontWeight="ExtraBold" />
+                        </Viewbox>
+                    </Border>
+
+                    <Border Grid.Column="0" Grid.Row="6"
+                            CornerRadius="5" BorderBrush="Orange" BorderThickness="2"
+                            Background="{Binding Source={StaticResource AppSettings}, Path=LabelColor}" VerticalAlignment="Stretch" HorizontalAlignment="Right"
+                            Width="{Binding LabelWidth}" Height ="{Binding LabelHeight}" Margin="{Binding ItemMargin}">
+                        <Viewbox Stretch="Uniform" HorizontalAlignment="Right">
+                            <Label Content=":ملف الفاكس"
+                                Foreground="Black"
+                                HorizontalAlignment="Right" VerticalAlignment="Stretch"
+                                FontFamily="Arabic Typesetting" FontWeight="ExtraBold" />
+                        </Viewbox>
+                    </Border>
+
+                    <!-- Row 8 -->
+                    <Border Grid.Column="1" Grid.Row="7"
+                        CornerRadius="5" BorderBrush="Black" BorderThickness="2"
+                        Background="White" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+                        Margin="{Binding ItemMargin}">
+                        <TextBox x:Name ="ResponsibleUnits" Text="" Background="Transparent"
+                            Margin="{Binding ItemMargin}"
+                            TextDecorations="None"
+                            FontWeight="Bold" FontSize="18"
+                            VerticalContentAlignment="Center" HorizontalContentAlignment="Right"
+                            BorderThickness="0" IsReadOnly="False"
+                            HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                            TextAlignment="Left"
+                            FlowDirection="RightToLeft"
+                        />
+                    </Border>
+
+                    <Border Grid.Column="0" Grid.Row="7"
+                        CornerRadius="5" BorderBrush="Black" BorderThickness="2"
+                        Background="White" VerticalAlignment="Stretch" HorizontalAlignment="Right"
+                        Width="{Binding PathTextBoxWidth}" Height="{Binding LabelHeight}"
+                        Margin="{Binding ItemMargin}">
+                        <TextBox x:Name ="FaxPathFile" Text="" Background="Transparent"
+                            Margin="{Binding ItemMargin}"
+                            TextDecorations="None"
+                            FontWeight="Bold" FontSize="18"
+                            VerticalContentAlignment="Center" HorizontalContentAlignment="Right"
+                            BorderThickness="0" IsReadOnly="True"
+                            HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                            TextAlignment="Left"
+                            FlowDirection="RightToLeft"
+                        />
+                    </Border>
+                    <Border Grid.Column="0" Grid.Row="7"
+                            CornerRadius="5" BorderBrush="Yellow" BorderThickness="2"
+                            Background="{Binding Source={StaticResource AppSettings}, Path=ButtonColor}" VerticalAlignment="Stretch" HorizontalAlignment="Left"
+                            Width="{Binding PathButtonWidth}" Height="{Binding LabelHeight}" Margin="{Binding SaveButtonMargin}">
+                            <Viewbox Stretch="Uniform">
+                                    <Button Content="بحث"
+                                            FontFamily="Arabic Typesetting" FontWeight="Bold"
+                                            Background="Transparent" BorderThickness="0"
+                                            HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                            Click="PathButton_Click" />
+                            </Viewbox>
+                    </Border>
+
+                </Grid>
+            </ScrollViewer>
+        </Border>
+
+        <!-- Row 3 - Buttons -->
+        <Border Grid.Column="1" Grid.Row="7"
+                CornerRadius="5" BorderBrush="Yellow" BorderThickness="2"
+                Background="{Binding Source={StaticResource AppSettings}, Path=ButtonColor}" VerticalAlignment="Stretch" HorizontalAlignment="Right"
+                Width="{Binding ButtonWidth}" Margin="{Binding SaveButtonMargin}">
+            <Viewbox Stretch="Uniform">
+                <Button Content="حفظ"
+                        FontFamily="Arabic Typesetting" FontWeight="Bold"
+                        Background="Transparent" BorderThickness="0"
+                        HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                        Click="SaveButton_Click" />
+            </Viewbox>
+        </Border>
+
+        <Border Grid.Column="0" Grid.Row="7"
+                CornerRadius="5" BorderBrush="Yellow" BorderThickness="2"
+                Background="{Binding Source={StaticResource AppSettings}, Path=ButtonColor}" VerticalAlignment="Stretch" HorizontalAlignment="Left"
+                Width="{Binding ButtonWidth}" Margin="{Binding ReturnButtonMargin}">
+            <Viewbox Stretch="Uniform">
+                <Button Content="رجوع"
+                        FontFamily="Arabic Typesetting" FontWeight="Bold"
+                        Background="Transparent" BorderThickness="0"
+                        HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                        Click="BackButton_Click" />
+            </Viewbox>
+        </Border>
+    </Grid>
+</Page>
