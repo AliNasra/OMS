@@ -16,6 +16,8 @@ using System.Windows.Navigation;
 using WpfApp1.Views.Pages;
 using WpfApp1.Properties;
 using System.Runtime.InteropServices;
+using System.IO.Pipes;
+using CsvHelper;
 
 
 namespace WpfApp1
@@ -25,11 +27,60 @@ namespace WpfApp1
     /// </summary>
     public partial class App : Application
     {
-        DailyScheduler _dailyScheduler = new DailyScheduler();
+        DailyScheduler         _dailyScheduler = new DailyScheduler();
+        private static Mutex   _startupMutex;
+        private const string   PipeName        = "OMS_PIPE";
+
+
         [DllImport("shell32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
         static extern int SetCurrentProcessExplicitAppUserModelID(string AppID);
         private void Application_Startup(object sender, StartupEventArgs e)
         {
+            bool isNewInstance;
+            _startupMutex = new Mutex(true, "Global\\MyUniqueOMSAppNameMutex", out isNewInstance);
+            ToastNotificationManagerCompat.OnActivated += ToastActivated;
+            if (!isNewInstance)
+            {
+                bool launchedFromToast = false;
+
+                foreach (var arg in e.Args)
+                {
+                    if (arg.Contains("action=openCalendar"))
+                    {
+                        launchedFromToast = true;
+                        break;
+                    }
+                }
+                using (NamedPipeClientStream pipe = new NamedPipeClientStream(".", PipeName, PipeDirection.Out))
+                {
+                    try
+                    {
+                        pipe.Connect(100);
+                        using (StreamWriter writer = new StreamWriter(pipe))
+                        {
+                            if (launchedFromToast)
+                            {
+                                writer.WriteLine("SHOW_CALENDAR");
+                            }
+                            else
+                            {
+                                writer.WriteLine("OPEN_WINDOW");                        
+                            }
+                            writer.Flush();
+                        }
+                        
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Failed to communicate with the running instance."); 
+                    }
+                }
+                Shutdown();
+
+                return;
+
+            }
+            StartPipeServer();
             SetCurrentProcessExplicitAppUserModelID("com.Al.OMS");
             AddAppToStartup();
             IObligationService _obligationService = new ObligationService();
@@ -148,13 +199,37 @@ namespace WpfApp1
         private void AddAppToStartup()
         {
             string appName = "OMS";
-            string appPath = System.Reflection.Assembly.GetExecutingAssembly().Location;
+            string appPath = Path.Combine(AppContext.BaseDirectory, "WpfApp1.exe");
             RegistryKey key = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Run", true);
             key.SetValue(appName, $"\"{appPath}\"");
-            ToastNotificationManagerCompat.OnActivated += ToastActivated;
-
         }
         private void ToastActivated(ToastNotificationActivatedEventArgsCompat e)
+        {
+            using (NamedPipeClientStream pipe = new NamedPipeClientStream(".", PipeName, PipeDirection.Out))
+            {
+                try
+                {
+                    pipe.Connect(100);
+                    using (StreamWriter writer = new StreamWriter(pipe))
+                    {
+                            writer.WriteLine("SHOW_CALENDAR");
+                            writer.Flush();
+                    }
+                }
+                catch
+                {
+                }
+                Shutdown();
+            }
+        }
+        protected override void OnExit(ExitEventArgs e)
+        {
+            _startupMutex?.ReleaseMutex();
+            _startupMutex?.Dispose();
+            base.OnExit(e);
+        }
+
+        private void openObligationCalendar()
         {
             Application.Current.Dispatcher.Invoke(() =>
             {
@@ -167,6 +242,40 @@ namespace WpfApp1
                 window.Width = 600;
                 window.Height = 400;
                 window.Show();
+            });
+        }
+
+        private void StartPipeServer()
+        {
+            Task.Run(() =>
+            {
+                while (true)
+                {
+                    using (NamedPipeServerStream pipeServer = new NamedPipeServerStream(PipeName, PipeDirection.In))
+                    {
+                        pipeServer.WaitForConnection();
+                        using (StreamReader reader = new StreamReader(pipeServer))
+                        {
+                            string command = reader.ReadLine();
+                            if (command == "SHOW_CALENDAR")
+                            {
+                                openObligationCalendar();
+                            }
+                            else if (command == "OPEN_WINDOW")
+                            {
+                                Application.Current.Dispatcher.Invoke(() =>
+                                {
+                                    Application.Current.MainWindow.ShowInTaskbar = true;
+                                    Application.Current.MainWindow.Show();
+                                });                  
+                            }
+                            else
+                            {
+
+                            }
+                        }
+                    }
+                }
             });
         }
     }
